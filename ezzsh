@@ -62,7 +62,8 @@ cp $scriptpath/dircolors $HOME/.zsh/
 echo "[ezzsh] changing shell to zsh..."
 chsh -s "/usr/bin/zsh"
 
-
+cat "$HOME"/.zsh/README.textile
+rm"$HOME"/.zsh/README.textile
 
 
 
