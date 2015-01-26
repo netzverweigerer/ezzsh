@@ -54,8 +54,14 @@ fi
 echo "Cloning git://github.com/sjl/oh-my-zsh.git to ~/.zsh ..."
 git clone git://github.com/sjl/oh-my-zsh.git ~/.zsh
 cp "$scriptpath"/zshrc ~/.zshrc
-echo "running chsh command..."
+
+mv $HOME/.zsh/oh-my-zsh.sh $HOME/.zsh/zsh
+cp $HOME/.zsh/theme $HOME/.zsh/themes/ezzsh
+
+echo "[ezzsh] changing shell to zsh..."
 chsh -s "/usr/bin/zsh"
-echo "all done."
+
+
+
 
 
