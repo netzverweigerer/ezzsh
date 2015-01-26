@@ -31,12 +31,14 @@
 # 
 
 
-echo "[zsh] Automatic zsh install script - [http://www.zsh.org/]"
-echo "[zsh] Author: [netzverweigerer@github]"
+echo "[ezzsh] Automatic zsh install script - [http://www.zsh.org/]"
+echo "[ezzsh] Author: [netzverweigerer@github]"
 
+# change to home directory
+cd ~
 
 # look for already present zsh config
-echo "[zsh] Looking for existing zsh config..."
+echo "[ezzsh] Looking for existing zsh config..."
 if [ -f ~/.zshrc ]; then
   echo ".zshrc exists, exiting gracefully."
   exit 1
@@ -46,23 +48,11 @@ if [ -f ~/.zsh ]; then
   exit 1
 fi
 
-# get zsh configuration files from github
 echo "Cloning git://github.com/sjl/oh-my-zsh.git to ~/.zsh ..."
 git clone git://github.com/sjl/oh-my-zsh.git ~/.zsh
-
-# create default zshrc from template
-echo "[zsh] Creating default zshrc file from ~/.zsh/templates/zshrc.zsh-template ..."
-cp -vi ~/.zsh/templates/zshrc.zsh-template ~/.zshrc
-
-# goodbye
-echo "[zsh] Note: use \"chsh\" utility and change your default shell to \"zsh\"."
-echo "[zsh] installation successful."
-
-cat ~/.zshrc | sed -iE 's/^ZSH=.*$/ZSH=.zsh/' | grep -v ^source > .zshrc.tmp
-echo "source $ZSH/zsh" >> .zshrc.tmp
-mv -vi .zshrc.tmp .zshrc
-
-info "changing shell to zsh..."
+cp zshrc ~/.zshrc
+echo "running chsh command..."
 chsh -s "/usr/bin/zsh"
+echo "all done."
 
 
