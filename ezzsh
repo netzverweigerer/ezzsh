@@ -57,6 +57,7 @@ cp "$scriptpath"/zshrc ~/.zshrc
 
 mv $HOME/.zsh/oh-my-zsh.sh $HOME/.zsh/zsh
 cp ${scriptpath}/theme $HOME/.zsh/themes/ezzsh.zsh-theme
+cp $scriptpath/dircolors $HOME/.zsh/
 
 echo "[ezzsh] changing shell to zsh..."
 chsh -s "/usr/bin/zsh"
