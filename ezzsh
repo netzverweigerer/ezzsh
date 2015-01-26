@@ -52,7 +52,8 @@ if [ -e ~/.zsh ]; then
 fi
 
 echo "Cloning git://github.com/sjl/oh-my-zsh.git to ~/.zsh ..."
-git clone git://github.com/sjl/oh-my-zsh.git ~/.zsh
+# git clone git://github.com/sjl/oh-my-zsh.git ~/.zsh
+git clone git://github.com/netzverweigerer/oh-my-zsh.git ~/.zsh
 cp "$scriptpath"/zshrc ~/.zshrc
 
 mv $HOME/.zsh/oh-my-zsh.sh $HOME/.zsh/zsh
