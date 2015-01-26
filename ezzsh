@@ -59,15 +59,15 @@ mv $HOME/.zsh/oh-my-zsh.sh $HOME/.zsh/zsh
 cp ${scriptpath}/theme $HOME/.zsh/themes/ezzsh.zsh-theme
 cp $scriptpath/dircolors $HOME/.zsh/
 
-echo "[ezzsh] changing shell to zsh..."
-chsh -s "/usr/bin/zsh"
+shell="$(getent passwd | grep ^$(whoami) | cut -d":" -f 7)"
 
-echo
-echo "Displaying origin oh-my-zsh README.textile file..."
-echo
-sleep 3
-echo
-cat "$HOME"/.zsh/README.textile
+if [[ $shell =~ .*/zsh ]]; then
+  echo "[ezzsh] login shell: $shell"
+else
+  echo "[ezzsh] changing shell to zsh..."
+  chsh -s "/usr/bin/zsh"
+fi
+
 rm "$HOME"/.zsh/README.textile
 
 
