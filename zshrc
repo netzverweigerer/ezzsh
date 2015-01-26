@@ -51,7 +51,7 @@ fi
 # $ZSH - Path to your zsh installation.
 export ZSH=$HOME/.zsh/
 
-export PATH=$HOME/bin:/usr/local/bin:/usr/local/sbin:/usr/sbin:/sbin$PATH
+export PATH=$HOME/bin:/usr/local/bin:/usr/local/sbin:/usr/sbin:/sbin:$PATH
 
 # set $EDITOR
 export EDITOR='vim'
