@@ -31,6 +31,9 @@
 # 
 
 
+script="$(readlink -f $0)"
+scriptpath=`dirname "$script"`
+
 echo "[ezzsh] Automatic zsh install script - [http://www.zsh.org/]"
 echo "[ezzsh] Author: [netzverweigerer@github]"
 
@@ -39,18 +42,18 @@ cd ~
 
 # look for already present zsh config
 echo "[ezzsh] Looking for existing zsh config..."
-if [ -f ~/.zshrc ]; then
+if [ -e ~/.zshrc ]; then
   echo ".zshrc exists, exiting gracefully."
   exit 1
 fi
-if [ -f ~/.zsh ]; then
+if [ -e ~/.zsh ]; then
   echo ".zsh exists, exiting gracefully."
   exit 1
 fi
 
 echo "Cloning git://github.com/sjl/oh-my-zsh.git to ~/.zsh ..."
 git clone git://github.com/sjl/oh-my-zsh.git ~/.zsh
-cp zshrc ~/.zshrc
+cp "$scriptpath"/zshrc ~/.zshrc
 echo "running chsh command..."
 chsh -s "/usr/bin/zsh"
 echo "all done."
