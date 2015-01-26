@@ -58,4 +58,11 @@ cp -vi ~/.zsh/templates/zshrc.zsh-template ~/.zshrc
 echo "[zsh] Note: use \"chsh\" utility and change your default shell to \"zsh\"."
 echo "[zsh] installation successful."
 
+cat ~/.zshrc | sed -iE 's/^ZSH=.*$/ZSH=.zsh/' | grep -v ^source > .zshrc.tmp
+echo "source $ZSH/zsh" >> .zshrc.tmp
+mv -vi .zshrc.tmp .zshrc
+
+info "changing shell to zsh..."
+chsh -s "/usr/bin/zsh"
+
 
