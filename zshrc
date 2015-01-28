@@ -163,4 +163,10 @@ fi
 # grep with color
 alias grep='grep --color=auto'
 
+# enable ls colorization: 
+if [ "$TERM" != "dumb" ]; then
+  eval "$(dircolors "$ZSH"/dircolors)"
+  alias ls="$LS_COMMAND $LS_OPTIONS"
+fi
+
 
