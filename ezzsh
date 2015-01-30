@@ -53,7 +53,7 @@ fi
 
 echo "Cloning oh-my-zsh.git to ~/.zsh ..."
 git clone git://github.com/netzverweigerer/oh-my-zsh.git ~/.zsh
-ln -s "$scriptpath"/zshrc ~/.zshrc
+ln -s ~/.zsh/zshrc ~/.zshrc
 
 mv $HOME/.zsh/oh-my-zsh.sh $HOME/.zsh/zsh
 cp ${scriptpath}/theme $HOME/.zsh/themes/ezzsh.zsh-theme
