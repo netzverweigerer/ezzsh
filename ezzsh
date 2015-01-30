@@ -30,7 +30,6 @@
 # 3. This notice may not be removed or altered from any redistribution.
 # 
 
-
 script="$(readlink -f $0)"
 scriptpath=`dirname "$script"`
 
@@ -52,7 +51,8 @@ if [ -e ~/.zsh ]; then
 fi
 
 echo "Cloning forked oh-my-zsh to ~/.zsh ..."
-git clone git://github.com/netzverweigerer/oh-my-zsh.git ~/.zsh
+# git clone git://github.com/netzverweigerer/oh-my-zsh.git ~/.zsh
+git clone git@github.com:netzverweigerer/oh-my-zsh.git ~/.zsh
 ln -s ~/.zsh/zshrc ~/.zshrc
 
 mv $HOME/.zsh/oh-my-zsh.sh $HOME/.zsh/zsh
