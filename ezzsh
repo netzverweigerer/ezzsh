@@ -51,7 +51,7 @@ if [ -e ~/.zsh ]; then
   exit 1
 fi
 
-echo "Cloning oh-my-zsh.git to ~/.zsh ..."
+echo "Cloning forked oh-my-zsh to ~/.zsh ..."
 git clone git://github.com/netzverweigerer/oh-my-zsh.git ~/.zsh
 ln -s ~/.zsh/zshrc ~/.zshrc
 
