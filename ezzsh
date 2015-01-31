@@ -42,18 +42,19 @@ cd ~
 # look for already present zsh config
 echo "[ezzsh] Looking for existing zsh config..."
 if [ -e ~/.zshrc ]; then
-  echo ".zshrc exists, exiting gracefully."
-  exit 1
+  echo ".zshrc exists, creating backup file .zshrc.pre-ezzsh"
+  rm -rf ~/.zshrc.pre-ezzsh
+  mv ~/.zshrc ~/.zshrc.pre-ezzsh
 fi
 if [ -e ~/.zsh ]; then
-  echo ".zsh exists, exiting gracefully."
-  exit 1
+  echo ".zsh exists, creating backup directory .zsh.pre-ezzsh"
+  rm -rf ~/.zsh.pre-ezzsh
+  mv ~/.zsh ~/.zsh.pre-ezzsh
 fi
 
 echo "Cloning forked oh-my-zsh to ~/.zsh ..."
-# git clone git://github.com/netzverweigerer/oh-my-zsh.git ~/.zsh
-git clone git@github.com:netzverweigerer/oh-my-zsh.git ~/.zsh
-ln -s ~/.zsh/zshrc ~/.zshrc
+git clone https://github.com/netzverweigerer/oh-my-zsh.git ~/.zsh || exit 1
+ln -s ~/.zsh/zshrc ~/.zshrc || exit 1
 
 # mv $HOME/.zsh/oh-my-zsh.sh $HOME/.zsh/zsh
 cp ${scriptpath}/theme $HOME/.zsh/themes/ezzsh.zsh-theme
