@@ -68,7 +68,7 @@ else
   chsh -s "/usr/bin/zsh"
 fi
 
-rm "$HOME"/.zsh/README.textile
+# rm "$HOME"/.zsh/README.textile
 
 
 
