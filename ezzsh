@@ -87,6 +87,14 @@ ln -s $HOME/.vim/vimrc $HOME/.vimrc
 
 echo "[ezzsh] ezzsh installation complete. Have a nice day."
 
+if [[ -e $HOME/.screenrc ]]; then
+  echo "backing up .screenrc: "
+  mv "$HOME/.screenrc" "$HOME/.screenrc.pre.ezzsh"
+fi
+
+wget -o $HOME/.screenrc https://raw.githubusercontent.com/netzverweigerer/screenrc/master/.screenrc
+
+
 
 # rm "$HOME"/.zsh/README.textile
 
