@@ -85,7 +85,6 @@ git clone https://github.com/netzverweigerer/.vim.git /tmp/dot-vim.git
 mv /tmp/dot-vim.git $HOME/.vim
 ln -s $HOME/.vim/vimrc $HOME/.vimrc
 
-echo "[ezzsh] ezzsh installation complete. Have a nice day."
 
 if [[ -e $HOME/.screenrc ]]; then
   echo "backing up .screenrc: "
@@ -93,6 +92,11 @@ if [[ -e $HOME/.screenrc ]]; then
 fi
 
 wget -o $HOME/.screenrc https://raw.githubusercontent.com/netzverweigerer/screenrc/master/.screenrc
+
+
+echo "[ezzsh] ezzsh installation complete. Use the chsh utility to change your"
+echo "[ezzsh] shell to zsh. Have a nice day."
+
 
 
 
