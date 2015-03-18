@@ -133,6 +133,24 @@ fi
 wget -o $HOME/.tmux.conf https://raw.githubusercontent.com/netzverweigerer/config-tmux/master/tmux.conf
 
 
+e "Install vim-nox (VI Improved, without X)? (y/n)"
+read -r -p "Install vim-nox? [y/N] " response
+case $response in
+    [yY][eE][sS]|[yY]) 
+        sudo apt-get install vim-nox
+        ;;
+esac
+
+e "Remove stupid nano editor? (y/n)"
+read -r -p "Remove nano? [y/N] " response
+case $response in
+    [yY][eE][sS]|[yY]) 
+        sudo apt-get remove nano
+        ;;
+esac
+
+
+
 e "ezzsh installation complete. Use the chsh utility to change your"
 e "shell to zsh. Have a nice day."
 
