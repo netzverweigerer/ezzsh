@@ -60,11 +60,9 @@ NOTE: screenrc does not have powerline support.
 cd ~
 
 # check for dependencies
-for dep in wget git zsh; do 
+for dep in sudo wget git vim curl zsh; do 
   hash "$dep" 2>/dev/null || { e "This script requires $dep to be installed. Exiting."; exit 1; }
 done
-
-sleep 3
 
 # look for already present zsh config
 e "Looking for existing zsh config..."
@@ -94,12 +92,12 @@ e "Performing configuration changes for vim ..."
 rm -rf $HOME/.vim.pre.ezzsh
 if [[ -e $HOME/.vim ]]; then
   e "backing up .vim: "
-  mv -v "$HOME/.vim" "$HOME/.vim.pre.ezzsh"
+  mv -v -i "$HOME/.vim" "$HOME/.vim.pre.ezzsh"
 fi
 rm -rf $HOME/.vimrc.pre.ezzsh
 if [[ -e $HOME/.vimrc ]]; then
   e "backing up .vimrc: "
-  mv -v "$HOME/.vimrc" "$HOME/.vimrc.pre.ezzsh"
+  mv -v -i "$HOME/.vimrc" "$HOME/.vimrc.pre.ezzsh"
 fi
 
 # .vim
@@ -113,7 +111,6 @@ ln -s $HOME/.vim/vimrc $HOME/.vimrc
 rm -rf /tmp/powerline.git
 git clone https://github.com/powerline/powerline.git /tmp/powerline.git
 rm -rf $HOME/git/powerline
-mkdir -p $HOME/git/powerline
 mv -vi /tmp/powerline.git $HOME/git/powerline
 
 # screenrc
@@ -122,7 +119,7 @@ if [[ -e $HOME/.screenrc ]]; then
   e "backing up .screenrc: "
   mv "$HOME/.screenrc" "$HOME/.screenrc.pre.ezzsh"
 fi
-wget -o $HOME/.screenrc https://raw.githubusercontent.com/netzverweigerer/screenrc/master/.screenrc
+curl -s --progress-bar https://raw.githubusercontent.com/netzverweigerer/screenrc/master/.screenrc > $HOME/.screenrc
 
 # tmux.conf
 rm -rf "$HOME/.tmux.conf.pre.ezzsh"
@@ -130,7 +127,7 @@ if [[ -e $HOME/.tmux.conf ]]; then
   e "backing up .tmux.conf: "
   mv "$HOME/.tmux.conf" "$HOME/.tmux.conf.pre.ezzsh"
 fi
-wget -o $HOME/.tmux.conf https://raw.githubusercontent.com/netzverweigerer/config-tmux/master/tmux.conf
+curl -s --progress-bar https://raw.githubusercontent.com/netzverweigerer/config-tmux/master/tmux.conf > $HOME/.tmux.conf
 
 
 e "Install vim-nox (VI Improved, without X)? (y/n)"
@@ -141,11 +138,19 @@ case $response in
         ;;
 esac
 
-e "Remove stupid nano editor? (y/n)"
+e "Remove nano editor? (Beginner editor annoying power users as default in Debian) (y/n)"
 read -r -p "Remove nano? [y/N] " response
 case $response in
     [yY][eE][sS]|[yY]) 
         sudo apt-get remove nano
+        ;;
+esac
+
+e "Install additional tools (lynx, curl, wget)? (y/n)"
+read -r -p "Install lynx/curl/wget? [y/N] " response
+case $response in
+    [yY][eE][sS]|[yY]) 
+        sudo apt-get install lynx curl wget
         ;;
 esac
 
