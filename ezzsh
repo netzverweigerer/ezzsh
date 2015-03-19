@@ -111,6 +111,7 @@ ln -s $HOME/.vim/vimrc $HOME/.vimrc
 rm -rf /tmp/powerline.git
 git clone https://github.com/powerline/powerline.git /tmp/powerline.git
 rm -rf $HOME/git/powerline
+mkdir -p $HOME/git/
 mv -vi /tmp/powerline.git $HOME/git/powerline
 
 # screenrc
