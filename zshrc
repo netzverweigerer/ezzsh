@@ -51,7 +51,7 @@ fi
 # $ZSH - Path to your zsh installation.
 export ZSH=$HOME/.zsh/
 
-export PATH=$HOME/bin:/usr/local/bin:/usr/local/sbin:/usr/sbin:/sbin$PATH
+export PATH=$HOME/bin:/usr/local/bin:/usr/local/sbin:/usr/sbin:/sbin:$PATH
 
 # set $EDITOR
 export EDITOR='vim'
@@ -162,5 +162,11 @@ fi
 
 # grep with color
 alias grep='grep --color=auto'
+
+# enable ls colorization: 
+if [ "$TERM" != "dumb" ]; then
+  eval "$(dircolors "$ZSH"/dircolors)"
+  alias ls="$LS_COMMAND $LS_OPTIONS"
+fi
 
 

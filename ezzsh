@@ -1,72 +1,147 @@
-#!/bin/bash
-# 
-# ezzsh
-# Version information: %%VERSION%%
-#
-# installs a basic zsh setup
-# written by Armin <netzverweigerer@github> Mon Jan 26 03:28:10 CET 2015
-# 
-# Released under an Attribution 4.0 International (CC BY 4.0) Creative Commons
-# License
-# 
-# This software is provided 'as-is', without any express or implied warranty.
-# In no event will the authors be held liable for any damages arising from the
-# use of this software.
-# Permission is granted to anyone to use this software for any non-commercial
-# purpose.
-# 
-# Redistribution of this software under the following restrictions:
-# 
-# 1. The origin of this software must not be misrepresented; you must not claim
-#    that you wrote the original software. If you use this software in a
-#    product, an acknowledgment in the product documentation is required.
-# 
-# 2. Altered source versions must be plainly marked as such, and must not be
-#    misrepresented as being the original software.
-# 
-# 3. This notice may not be removed or altered from any redistribution.
-# 
-# 
+#!/usr/bin/env bash
+# vim: ts=2 sw=2 sts=2 et
+# [ezzsh]
+# aims to automatically install a usable shell environment using zsh, vim,
+# tmux - uses the powerline font characters.
+# Written by Armin Jenewein <armin@arminius.org>
 
 script="$(readlink -f $0)"
 scriptpath=`dirname "$script"`
 
-echo "[ezzsh] Automatic zsh install script - [http://www.zsh.org/]"
-echo "[ezzsh] Author: [netzverweigerer@github]"
+version="$(git rev-parse --verify HEAD)"
+
+c="\033[0;31m[\033[0;36mezzsh\033[0;31m] \033[0;38m"
+
+e () {
+end="\033[0;0m"
+echo -e "${c}${@}${end}"
+}
+
+# show header
+e '
+                                                    .__     
+                      ____  ________________  ______|  |__  
+                    _/ __ \ \___   /\___   / /  ___/|  |  \ 
+                    \  ___/  /    /  /    /  \___ \ |   Y  \
+                     \___  >/_____ \/_____ \/____  >|___|  /
+                         \/       \/      \/     \/      \/ 
+'
+e "Version: $version
+includes configuration defaults for vim/screen/tmux.
+NOTE: screenrc does not have powerline support.
+"
 
 # change to home directory
 cd ~
 
+# check for dependencies
+for dep in sudo wget git vim curl zsh; do 
+  hash "$dep" 2>/dev/null || { e "This script requires $dep to be installed. Exiting."; exit 1; }
+done
+
 # look for already present zsh config
-echo "[ezzsh] Looking for existing zsh config..."
+e "Looking for existing zsh config..."
 if [ -e ~/.zshrc ]; then
-  echo ".zshrc exists, exiting gracefully."
-  exit 1
+  e ".zshrc exists, creating backup in .zshrc.pre-ezzsh"
+  rm -rf ~/.zshrc.pre-ezzsh
+  mv ~/.zshrc ~/.zshrc.pre-ezzsh
 fi
 if [ -e ~/.zsh ]; then
-  echo ".zsh exists, exiting gracefully."
-  exit 1
+  e ".zsh exists, creating backup in .zsh.pre-ezzsh/"
+  rm -rf ~/.zsh.pre-ezzsh
+  mv ~/.zsh ~/.zsh.pre-ezzsh
 fi
 
+<<<<<<< HEAD
 echo "Cloning git://github.com/sjl/oh-my-zsh.git to ~/.zsh ..."
 # git clone git://github.com/sjl/oh-my-zsh.git ~/.zsh
 git clone git://github.com/netzverweigerer/oh-my-zsh.git ~/.zsh
 cp "$scriptpath"/zshrc ~/.zshrc
+=======
+e "Cloning forked oh-my-zsh to ~/.zsh ..."
+git clone https://github.com/netzverweigerer/oh-my-zsh.git ~/.zsh || exit 1
+ln -s ~/.zsh/zshrc ~/.zshrc || exit 1
+>>>>>>> 9644e07a07566e8d0d688b9bd20f5790595912f3
 
-mv $HOME/.zsh/oh-my-zsh.sh $HOME/.zsh/zsh
+# mv $HOME/.zsh/oh-my-zsh.sh $HOME/.zsh/zsh
 cp ${scriptpath}/theme $HOME/.zsh/themes/ezzsh.zsh-theme
 cp $scriptpath/dircolors $HOME/.zsh/
 
-shell="$(getent passwd | grep ^$(whoami) | cut -d":" -f 7)"
 
-if [[ $shell =~ .*/zsh ]]; then
-  echo "[ezzsh] login shell: $shell"
-else
-  echo "[ezzsh] changing shell to zsh..."
-  chsh -s "/usr/bin/zsh"
+e "Performing configuration changes for vim ..."
+
+# vim backups
+rm -rf $HOME/.vim.pre.ezzsh
+if [[ -e $HOME/.vim ]]; then
+  e "backing up .vim: "
+  mv -v -i "$HOME/.vim" "$HOME/.vim.pre.ezzsh"
+fi
+rm -rf $HOME/.vimrc.pre.ezzsh
+if [[ -e $HOME/.vimrc ]]; then
+  e "backing up .vimrc: "
+  mv -v -i "$HOME/.vimrc" "$HOME/.vimrc.pre.ezzsh"
 fi
 
-rm "$HOME"/.zsh/README.textile
+# .vim
+rm -rf /tmp/dot-vim.git
+git clone https://github.com/netzverweigerer/.vim.git /tmp/dot-vim.git
+mv /tmp/dot-vim.git $HOME/.vim
+rm -rf $HOME/.vimrc
+ln -s $HOME/.vim/vimrc $HOME/.vimrc
+
+# powerline
+rm -rf /tmp/powerline.git
+git clone https://github.com/powerline/powerline.git /tmp/powerline.git
+rm -rf $HOME/git/powerline
+mkdir -p $HOME/git/
+mv -vi /tmp/powerline.git $HOME/git/powerline
+
+# screenrc
+rm -rf "$HOME/.screenrc.pre.ezzsh"
+if [[ -e $HOME/.screenrc ]]; then
+  e "backing up .screenrc: "
+  mv "$HOME/.screenrc" "$HOME/.screenrc.pre.ezzsh"
+fi
+curl -s --progress-bar https://raw.githubusercontent.com/netzverweigerer/screenrc/master/.screenrc > $HOME/.screenrc
+
+# tmux.conf
+rm -rf "$HOME/.tmux.conf.pre.ezzsh"
+if [[ -e $HOME/.tmux.conf ]]; then
+  e "backing up .tmux.conf: "
+  mv "$HOME/.tmux.conf" "$HOME/.tmux.conf.pre.ezzsh"
+fi
+curl -s --progress-bar https://raw.githubusercontent.com/netzverweigerer/config-tmux/master/tmux.conf > $HOME/.tmux.conf
+
+
+e "Install vim-nox (VI Improved, without X)? (y/n)"
+read -r -p "Install vim-nox? [y/N] " response
+case $response in
+    [yY][eE][sS]|[yY]) 
+        sudo apt-get install vim-nox
+        ;;
+esac
+
+e "Remove nano editor? (Beginner editor annoying power users as default in Debian) (y/n)"
+read -r -p "Remove nano? [y/N] " response
+case $response in
+    [yY][eE][sS]|[yY]) 
+        sudo apt-get remove nano
+        ;;
+esac
+
+e "Install additional tools (lynx, curl, wget)? (y/n)"
+read -r -p "Install lynx/curl/wget? [y/N] " response
+case $response in
+    [yY][eE][sS]|[yY]) 
+        sudo apt-get install lynx curl wget
+        ;;
+esac
+
+
+
+e "ezzsh installation complete. Use the chsh utility to change your"
+e "shell to zsh. Have a nice day."
+
 
 
 
